@@ -1,0 +1,95 @@
+﻿<Window x:Class="WpfApp2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp2"
+        mc:Ignorable="d"
+        
+        Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
+    <Window.Resources>
+        <DataTemplate x:Key="VIEW">
+            <TextBlock Text="{Binding}" />
+        </DataTemplate>
+
+
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.New"
+                        Executed="New_Command"/>
+        <CommandBinding Command="ApplicationCommands.Open"
+                        Executed="Open_Command"/>
+        <CommandBinding Command="ApplicationCommands.Save"
+                        CanExecute="Can_Save_Command"
+                        Executed="Save_Command"/>
+        <CommandBinding Command="ApplicationCommands.Delete"
+                        CanExecute="Can_Delete_Command"
+                        Executed="Delete_Command"/>
+        <CommandBinding Command="{x:Static local:MainWindow.AddModelCommand}"
+                        CanExecute="Can_Add_Command"
+                        Executed="Add_Command"/>
+        <CommandBinding Command="{x:Static local:MainWindow.DrawCommand}"
+                        CanExecute="Can_Draw_Command"
+                        Executed="Draw_Command"/>
+    </Window.CommandBindings>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="246*"/>
+            <ColumnDefinition Width="151*"/>
+        </Grid.ColumnDefinitions>
+        <Menu HorizontalAlignment="Left" Height="29" Margin="1,0,0,0" VerticalAlignment="Top" Width="152">
+            <MenuItem Header="File" Width="73" Height="28" RenderTransformOrigin="0.5,0.5">
+                <MenuItem Header="New" Command="ApplicationCommands.New"/>
+                <MenuItem Header="Open" Command="ApplicationCommands.Open"/>
+                <MenuItem Header="Save" Command="ApplicationCommands.Save"/>
+            </MenuItem>
+            <MenuItem Header="Edit" Height="30" Width="73">
+                <MenuItem Header="Add" Command="{x:Static local:MainWindow.AddModelCommand}"/>
+                <MenuItem Header="Remove" Command="ApplicationCommands.Delete"/>
+            </MenuItem>
+            <MenuItem Header="Draw" Command="{x:Static local:MainWindow.DrawCommand}"/>
+        </Menu>
+
+        <ListBox Name ="Element_p" HorizontalAlignment="Left" Height="114" Margin="12,196,0,0" VerticalAlignment="Top" Width="246" ItemTemplate="{StaticResource VIEW}" ItemsSource ="{Binding}"
+                 IsSynchronizedWithCurrentItem ="True"/>
+        <TextBlock HorizontalAlignment="Left" Height="23" Margin="131,55,0,342.667" Width="40">Order:</TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="23" Margin="12,34,0,363.667" Width="35">Type</TextBlock>
+        <TextBox Name ="Order" HorizontalAlignment="Left" Height="21" TextWrapping="Wrap" VerticalAlignment="Top" Width="38" Margin="171,55,0,0" Text=""/>
+        <ComboBox Name ="Type" HorizontalAlignment="Left" Margin="11,53,0,0" VerticalAlignment="Top" Width="93" Text="" Height="23" />
+        <TextBlock HorizontalAlignment="Left" Height="23" Margin="13,81,0,316.667">p_min</TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="23" Margin="88,81,0,316.667">p_max</TextBlock>
+        <TextBox Name="n_Max" HorizontalAlignment="Left" Height="23" Margin="88,153,0,0" TextWrapping="Wrap" Text="{Binding Path=n_max, Mode=OneWay}" VerticalAlignment="Top" Width="38"/>
+        <TextBox x:Name="n_Min" HorizontalAlignment="Left" Height="23" Margin="11,153,0,0" TextWrapping="Wrap" Text="{Binding Path=n_min, Mode=OneWay}" VerticalAlignment="Top" Width="39"/>
+        <TextBox x:Name="p_Min"  HorizontalAlignment="Left" Height="23" Margin="86,103,0,0" TextWrapping="Wrap" Text="{Binding Path=p_max, Mode=OneWay}" VerticalAlignment="Top" Width="38"/>
+        <TextBox x:Name="p_Max"  HorizontalAlignment="Left" Height="23" Margin="12,103,0,0" TextWrapping="Wrap" Text="{Binding Path=p_min, Mode=OneWay}" VerticalAlignment="Top" Width="39"/>
+        <TextBlock HorizontalAlignment="Left" Height="23" Margin="13,131,0,266.667">n_min</TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="23" Margin="90,131,0,266.667">n_max</TextBlock>
+        <TextBox Name="Enter_p"  HorizontalAlignment="Left" Height="23" Margin="50,103,0,0" TextWrapping="Wrap" Text="{Binding SelectedItem.p, ElementName=Element_p, ValidatesOnDataErrors=True}" VerticalAlignment="Top" Width="38" />
+        <TextBox x:Name="Enter_n" HorizontalAlignment="Left" Height="23" Margin="49,153,0,0" TextWrapping="Wrap" Text="{Binding SelectedItem.AmountOfGridNodes, ElementName=Element_p , ValidatesOnDataErrors=True}" VerticalAlignment="Top" Width="39"/>
+        <ToolBar Height="29" VerticalAlignment="Top" Margin="148,0,151.333,0">
+            <Button  Command="ApplicationCommands.Open" Margin="0,0,0,-0.333" VerticalAlignment="Top" >
+                Open
+                <!--<Image Source="Open.png" Height="16" Width="23" />-->
+            </Button>
+            <Separator />
+            <Button  Command="ApplicationCommands.Save" Margin="0,0,0,-0.333" VerticalAlignment="Top" Height="25">
+                Save
+                <!--<Image Source="Save.png" Height="15" Width="19" />-->
+            </Button>
+            <Separator />
+            <Button Command= "{x:Static local:MainWindow.DrawCommand}">
+                Draw
+            </Button>
+            <Separator />
+            <Button  Command="ApplicationCommands.Delete" Margin="0,0,0,-0.333" VerticalAlignment="Stretch">
+                Remove
+                <!--<Image Source="Cut.png" Height="15" Width="19" />-->
+            </Button>
+        </ToolBar>
+
+        <WindowsFormsHost x:Name="winFormsHost" HorizontalAlignment="Left" Height="419" Margin="340,0,0,0" VerticalAlignment="Top" Width="452" Grid.ColumnSpan="2"/>
+
+    </Grid>
+</Window>
